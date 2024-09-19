@@ -17,9 +17,9 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { BookOpen, CopyCheck } from "lucide-react";
 import { Separator } from "../ui/separator";
-// import axios, { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-// import { useToast } from "../ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -40,13 +40,13 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   const router = useRouter();
   const [showLoader, setShowLoader] = React.useState(false);
   const [finishedLoading, setFinishedLoading] = React.useState(false);
-  //   const { toast } = useToast();
-  //   const { mutate: getQuestions, isLoading } = useMutation({
-  //     mutationFn: async ({ amount, topic, type }: Input) => {
-  //       const response = await axios.post("/api/game", { amount, topic, type });
-  //       return response.data;
-  //     },
-  //   });
+  const { toast } = useToast();
+  const { mutate: getQuestions, isLoading } = useMutation({
+    mutationFn: async ({ amount, topic, type }: Input) => {
+      const response = await axios.post("/api/game", { amount, topic, type });
+      return response.data;
+    },
+  });
 
   const form = useForm<Input>({
     resolver: zodResolver(quizCreationSchema),
@@ -59,37 +59,37 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
 
   const onSubmit = async (data: Input) => {
     // setShowLoader(true);
-    alert(JSON.stringify(data, null, 2));
-    // getQuestions(data, {
-    //   onError: (error) => {
-    //     setShowLoader(false);
-    //     if (error instanceof AxiosError) {
-    //       if (error.response?.status === 500) {
-    //         toast({
-    //           title: "Error",
-    //           description: "Something went wrong. Please try again later.",
-    //           variant: "destructive",
-    //         });
-    //       }
-    //     }
-    //   },
-    //   onSuccess: ({ gameId }: { gameId: string }) => {
-    //     setFinishedLoading(true);
-    //     setTimeout(() => {
-    //       if (form.getValues("type") === "mcq") {
-    //         router.push(`/play/mcq/${gameId}`);
-    //       } else if (form.getValues("type") === "open_ended") {
-    //         router.push(`/play/open-ended/${gameId}`);
-    //       }
-    //     }, 2000);
-    //   },
-    // });
+    // alert(JSON.stringify(data, null, 2));
+    getQuestions(data, {
+      onError: (error) => {
+        setShowLoader(false);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 500) {
+            toast({
+              title: "Error",
+              description: "Something went wrong. Please try again later.",
+              variant: "destructive",
+            });
+          }
+        }
+      },
+      onSuccess: ({ gameId }: { gameId: string }) => {
+        setFinishedLoading(true);
+        setTimeout(() => {
+          if (form.getValues("type") === "mcq") {
+            router.push(`/play/mcq/${gameId}`);
+          } else if (form.getValues("type") === "open_ended") {
+            router.push(`/play/open-ended/${gameId}`);
+          }
+        }, 2000);
+      },
+    });
   };
   form.watch();
 
-  //   if (showLoader) {
-  //     return <LoadingQuestions finished={finishedLoading} />;
-  //   }
+  // if (showLoader) {
+  //   return <LoadingQuestions finished={finishedLoading} />;
+  // }
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
