@@ -28,6 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { log } from "console";
 // import LoadingQuestions from "../LoadingQuestions";
 
 type Props = {
@@ -44,6 +45,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   const { mutate: getQuestions, isLoading } = useMutation({
     mutationFn: async ({ amount, topic, type }: Input) => {
       const response = await axios.post("/api/game", { amount, topic, type });
+      console.log(response.data);
       return response.data;
     },
   });
@@ -62,6 +64,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
     // alert(JSON.stringify(data, null, 2));
     getQuestions(data, {
       onError: (error) => {
+        console.log(error);
         setShowLoader(false);
         if (error instanceof AxiosError) {
           if (error.response?.status === 500) {

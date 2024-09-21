@@ -51,8 +51,9 @@ const OpenEnded = ({ game }: Props) => {
     mutationFn: async () => {
       let filledAnswer = blankAnswer;
       document.querySelectorAll("#user-blank-input").forEach((input) => {
-        filledAnswer = filledAnswer.replace("_____", input.value);
-        input.value = "";
+        const inputElement = input as HTMLInputElement; // Type assertion
+        filledAnswer = filledAnswer.replace("_____", inputElement.value);
+        inputElement.value = ""; // Reset the value after processing
       });
       const payload: z.infer<typeof checkAnswerSchema> = {
         questionId: currentQuestion.id,
@@ -76,6 +77,7 @@ const OpenEnded = ({ game }: Props) => {
       onSuccess: ({ percentageSimilar }) => {
         toast({
           title: `Your answer is ${percentageSimilar}% similar to the correct answer`,
+          description: `Sample answer is ${currentQuestion.answer}`,
         });
         setAveragePercentage((prev) => {
           return (prev + percentageSimilar) / (questionIndex + 1);
