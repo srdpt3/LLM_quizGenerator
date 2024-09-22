@@ -89,7 +89,7 @@ const MCQ = ({ game }: Props) => {
   }, [hasEnded]);
   const handleNext = React.useCallback(() => {
     checkAnswer(undefined, {
-      onSuccess: ({ isCorrect }) => {
+      onSuccess: ({ isCorrect, answer }) => {
         if (isCorrect) {
           setStats((stats) => ({
             ...stats,
@@ -107,7 +107,7 @@ const MCQ = ({ game }: Props) => {
           }));
           toast({
             title: "Incorrect",
-            description: "You got it wrong!",
+            description: `You got it wrong! Correct answer is ${answer}`, // Display the correct answer
             variant: "destructive",
           });
         }
@@ -120,7 +120,7 @@ const MCQ = ({ game }: Props) => {
         }
 
         // Reset selected choice before moving to the next question
-        // setSelectedChoice(-1);
+        setSelectedChoice(-1);
 
         // Move to the next question
         setQuestionIndex((prevIndex) => prevIndex + 1);

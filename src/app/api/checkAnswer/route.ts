@@ -27,6 +27,7 @@ export async function POST(req: Request, res: Response) {
       data: { userAnswer: userInput },
     });
     if (question.questionType === "mcq") {
+      console.log(question.answer);
       const isCorrect =
         question.answer.toLowerCase().trim() === userInput.toLowerCase().trim();
       await prisma.question.update({
@@ -35,6 +36,7 @@ export async function POST(req: Request, res: Response) {
       });
       return NextResponse.json({
         isCorrect,
+        answer: question.answer, // Include the correct answer in the response
       });
     } else if (question.questionType === "open_ended") {
       //   let percentageSimilar = levenshtein.get(

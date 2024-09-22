@@ -23,9 +23,10 @@ export async function POST(req: Request, res: Response) {
     let questions: any;
     if (type === "open_ended") {
       questions = await strict_output(
-        "You are a helpful AI that is able to generate a pair of question and answers , the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
+        "You are a helpful AI that is able to generate a pair of question and answers ," +
+          "the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
         new Array(amount).fill(
-          `You are to generate a random hard open-ended questions about ${topic} `
+          `You are to generate a random  open-ended questions about ${topic} `
         ),
         {
           question: "question",
@@ -34,7 +35,9 @@ export async function POST(req: Request, res: Response) {
       );
     } else if (type === "mcq") {
       questions = await strict_output(
-        "You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 20 words, store all answers and questions and options in a JSON array",
+        "You are a helpful AI that is able to generate mcq questions and answers" +
+          "the length of each answer should not be more than 15 words, and also each option should not be duplicated" +
+          "store all answers and questions and options in a JSON array",
         new Array(amount).fill(
           `You are to generate a random hard mcq question about ${topic}`
         ),
@@ -45,7 +48,6 @@ export async function POST(req: Request, res: Response) {
           option2: "option2 with max length of 15 words",
           option3: "option3 with max length of 15 words",
           option4: "option4 with max length of 15 words",
-          option5: "option4 with max length of 15 words",
         }
       );
     }

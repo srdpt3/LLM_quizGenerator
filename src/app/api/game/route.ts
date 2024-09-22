@@ -58,7 +58,6 @@ export async function POST(req: Request, res: Response) {
         option2: string;
         option3: string;
         option4: string;
-        option5: string;
       };
 
       const manyData = data.questions.map((question: mcqQuestion) => {
@@ -68,8 +67,6 @@ export async function POST(req: Request, res: Response) {
           question.option2,
           question.option3,
           question.option4,
-          question.option5,
-          question.answer,
         ].sort(() => Math.random() - 0.5);
         return {
           question: question.question,
@@ -131,7 +128,7 @@ export async function GET(req: Request, res: Response) {
       );
     }
     const url = new URL(req.url);
-    const gameId = url.searchParams.get("gameId");
+    const gameId = url.searchParams.get("game1Id");
     if (!gameId) {
       return NextResponse.json(
         { error: "You must provide a game id." },
