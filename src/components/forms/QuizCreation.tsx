@@ -29,7 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { log } from "console";
-// import LoadingQuestions from "../LoadingQuestions";
+import LoadingQuestions from "../LoadingQuestions";
 
 type Props = {
   topic: string;
@@ -44,8 +44,10 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   const { toast } = useToast();
   const { mutate: getQuestions, isLoading } = useMutation({
     mutationFn: async ({ amount, topic, type }: Input) => {
+      console.log("isLoading" + isLoading);
+
       const response = await axios.post("/api/game", { amount, topic, type });
-      console.log(response.data);
+      console.log("isLoading2" + isLoading);
       return response.data;
     },
   });
@@ -60,7 +62,7 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   });
 
   const onSubmit = async (data: Input) => {
-    // setShowLoader(true);
+    setShowLoader(true);
     // alert(JSON.stringify(data, null, 2));
     getQuestions(data, {
       onError: (error) => {
@@ -90,9 +92,9 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
   };
   form.watch();
 
-  // if (showLoader) {
-  //   return <LoadingQuestions finished={finishedLoading} />;
-  // }
+  if (showLoader) {
+    return <LoadingQuestions finished={finishedLoading} />;
+  }
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
