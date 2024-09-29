@@ -6,20 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import WordCloud from "../WordCloud";
 import { prisma } from "@/lib/db";
 import CustomWordCloud from "../CustomWordCloud";
+import WordCloud from "../WordCloud";
 
 type Props = {};
 
 const HotTopicsCard = async (props: Props) => {
   const topics = await prisma.topic_count.findMany({});
-  //   const formattedTopics = topics.map((topic) => {
-  //     return {
-  //       text: topic.topic,
-  //       value: topic.count,
-  //     };
-  //   });
+  const formattedTopics = topics.map((topic) => {
+    return {
+      text: topic.topic,
+      value: topic.count,
+    };
+  });
   return (
     <Card className="col-span-4">
       <CardHeader>
@@ -29,8 +29,8 @@ const HotTopicsCard = async (props: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
-        <CustomWordCloud></CustomWordCloud>
-        {/* <WordCloud formattedTopics={formattedTopics} /> */}
+        {/* <CustomWordCloud></CustomWordCloud> */}
+        <WordCloud formattedTopics={formattedTopics} />
       </CardContent>
     </Card>
   );

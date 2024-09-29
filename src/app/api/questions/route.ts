@@ -36,7 +36,7 @@ export async function POST(req: Request, res: Response) {
     } else if (type === "mcq") {
       questions = await strict_output(
         "You are a helpful AI that is able to generate mcq questions and answers" +
-          "the length of each answer should not be more than 15 words, and also each option should not be duplicated" +
+          "the length of each answer should not be more than 15 words, and also each option should not be duplicated with previous ones.. this is very important . do not create duplicated ones" +
           "store all answers and questions and options in a JSON array",
         new Array(amount).fill(
           `You are to generate a random hard mcq question about ${topic}`

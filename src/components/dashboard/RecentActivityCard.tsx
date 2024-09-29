@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
-// import HistoryComponent from "../HistoryComponent";
+import HistoryComponent from "../HistoryComponent";
 import { prisma } from "@/lib/db";
 
 type Props = {};
@@ -35,7 +35,7 @@ const RecentActivityCard = async (props: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="max-h-[580px] overflow-scroll">
-        {/* <HistoryComponent limit={10} userId={session.user.id} /> */}
+        <HistoryComponent limit={10} userId={session.user.id} />
       </CardContent>
     </Card>
   );
